@@ -1,16 +1,16 @@
-import React,{useState,useEffect} from 'react';
-//import { Link } from "react-router-dom";
-import { Row,Col,Form,Button,Table, } from "react-bootstrap";
-import {LinkContainer} from "react-router-bootstrap"
-import {useSelector, useDispatch} from 'react-redux'
-//import { listMyOrder } from '../actions/orderAction'
-import {getUserDetails, updateUserProfile} from '../actions/userAction'
-//import FormContainer from '../components/FormContainer';
-import Message from '../components/Message';
-import Loader from '../components/Loader';
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { Form, Button, Row, Col, Table } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
 
-import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants';
-import { listMyOrders } from '../actions/orderAction';
+import { getUserDetails, updateUserProfile } from '../actions/userAction'
+import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
+//import { listMyOrders } from '../actions/orderActions
+import {listMyOrders} from '../actions/orderAction'
+
 function ProfileScreen({ history }) {
 
     const [name, setName] = useState('')
@@ -33,21 +33,23 @@ function ProfileScreen({ history }) {
     const orderListMy = useSelector(state => state.orderListMy)
     const { loading: loadingOrders, error: errorOrders, orders } = orderListMy
 
+    
 
     useEffect(() => {
         if (!userInfo) {
             history.push('/login')
         } else {
-            if (!user || !user.name || success || userInfo._id !== user._id) {
+            if (!user || !user.name || success || userInfo.name !== user.name ) {
                 dispatch({ type: USER_UPDATE_PROFILE_RESET })
-                //dispatch(getUserDetails('profile'))
+                dispatch(getUserDetails('profile'))
                 dispatch(listMyOrders())
+                
             } else {
                 setName(user.name)
                 setEmail(user.email)
             }
         }
-    }, [dispatch, history,userInfo, user, success])
+    }, [dispatch,history,user,userInfo, success])
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -174,3 +176,5 @@ function ProfileScreen({ history }) {
 }
 
 export default ProfileScreen
+
+

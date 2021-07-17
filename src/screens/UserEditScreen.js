@@ -1,108 +1,117 @@
-import * as React from 'react';
-import { Link } from "react-router-dom";
-import { Form,Button } from "react-bootstrap";
-import {useSelector, useDispatch} from 'react-redux'
-import { getUserDetails } from '../actions/userAction';
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { Form, Button } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
+import FormContainer from '../components/FormContainer'
+import { getUserDetails } from '../actions/userAction'
+//import { getUserDetails, updateUser } from '../actions/userActions'
+import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
+//import { USER_UPDATE_RESET } from '../../../proshop_django-master/frontend/src/constants/userConstants'
 
-import FormContainer from '../components/FormContainer';
-import Message from '../components/Message';
-import Loader from '../components/Loader';
 
-function UserEditScreen({match,history}) {
+function UserEditScreen({ match, history }) {
+
     const userId = match.params.id
-    
-    const [name, setName] = React.useState('')
-    const [email, setEmail] = React.useState('')
-    const [isAdmin, setIsAdmin] = React.useState(false)
-   
-   
- 
 
-    const userDetails = useSelector(state=> state.userDetails)
-    const {loading,error,user} = userDetails
-    
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [isAdmin, setIsAdmin] = useState(false)
+
     const dispatch = useDispatch()
-    React.useEffect(()=>{
-        if (!user.name || user._id !== Number(userId)) {
-            dispatch(getUserDetails(userId))
-        } else {
-            setName(user.name)
-            setEmail(user.email)
-            setIsAdmin(user.isAdmin)
-        }
-           
-        
-       
-       
-    }, [user, userId])
-    
-    const submitHandler = (e)=>{
-        e.preventDefault()
-        
-    }
 
+    const userDetails = useSelector(state => state.userDetails)
+    const { error, loading, user } = userDetails
 
-    return (
+    //const userUpdate = useSelector(state => state.userUpdate)
+    //const { error: errorUpdate, loading: loadingUpdate, success: successUpdate } = userUpdate
 
-        <div>
-            <Link to='/admin/userlist'>
-                Go back
-            </Link>
-            <FormContainer>
+    useEffect(() => {
 
-                <h1>Edit User</h1>
-                    {loading ? <Loader/>:
-                    error ? <Message variant="danger">{error}</Message>
-                        : (
-                            <Form onSubmit={submitHandler}>
-                            <Form.Group controlId="name">
-                                <Form.Label>UserName</Form.Label>
-                                <Form.Control
-                                
-                                type="text"
-                                placeholder="Enter your Username here"
-                                value={name} 
-                                onChange={(e)=>setName(e.target.value)}
-                                ></Form.Control>
-                            </Form.Group>
-
-                            <Form.Group controlId="email">
-                                <Form.Label>Email Address</Form.Label>
-                                <Form.Control
-                                required
-                                type="email"
-                                placeholder="Enter your Email here"
-                                value={email} 
-                                onChange={(e)=>setEmail(e.target.value)}
-                                ></Form.Control>
-
-                                <Form.Group controlId="isAdmin">
-                                
-                                <Form.Check
-                                
-                                type="checkbox"
-                                label="is Admin"
-                                checked={isAdmin} 
-                                onChange={(e)=>setIsAdmin(e.target.checked)}
-                                ></Form.Check>
-                            </Form.Group>
-
-
-                            <Button type="submit" variant="primary">Update</Button>
-                            </Form.Group>
-
-                        </Form>
-                                )}
-
-
-                        
-                        
-            </FormContainer>
-        </div>
         
             
         
-    );
-};
 
-export default UserEditScreen;
+            if (!user.name || user._id !== Number(userId)) {
+                dispatch(getUserDetails(userId))
+            } else {
+                setName(user.name)
+                setEmail(user.email)
+                setIsAdmin(user.isAdmin)
+        
+        }
+
+    }, [user, userId,])
+
+    const submitHandler = (e) => {
+        e.preventDefault()
+       // dispatch(updateUser({ _id: user._id, name, email, isAdmin }))
+    }
+
+    return (
+        <div>
+            <Link to='/admin/userlist'>
+                Go Back
+            </Link>
+
+            <FormContainer>
+                <h1>Edit User</h1>
+                
+        
+
+        
+                    
+                        <Form onSubmit={submitHandler}>
+
+                            <Form.Group controlId='name'>
+                                <Form.Label>Name</Form.Label>
+                                <Form.Control
+
+                                    type='name'
+                                    placeholder='Enter name'
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                >
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId='email'>
+                                <Form.Label>Email Address</Form.Label>
+                                <Form.Control
+                                    type='email'
+                                    placeholder='Enter Email'
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                >
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId='isadmin'>
+                                <Form.Check
+                                    type='checkbox'
+                                    label='Is Admin'
+                                    checked={isAdmin}
+                                    onChange={(e) => setIsAdmin(e.target.checked)}
+                                >
+                                </Form.Check>
+                            </Form.Group>
+
+                            <Button type='submit' variant='primary'>
+                                Update
+                        </Button>
+
+                        </Form>
+                    
+
+            </FormContainer >
+        </div>
+
+    )
+}
+
+export default UserEditScreen
+
+
+
+
