@@ -2,13 +2,11 @@
 
 import * as React from 'react';
 //import * as React from 'react';
-import { Link } from "react-router-dom";
-import { Row,Col,Form,Button } from "react-bootstrap";
+import { Col,Form,Button } from "react-bootstrap";
 import {useSelector, useDispatch} from 'react-redux'
 import { savePaymentMethod } from '../actions/cartActions';
 import FormContainer from '../components/FormContainer';
-import Message from '../components/Message';
-import Loader from '../components/Loader';
+
 import CheckoutSteps from '../components/CheckoutSteps';
 
 function PaymentScreen({history}) {

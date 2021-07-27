@@ -1,6 +1,6 @@
 // @flow strict
 
-import React,{useEffect,useState} from 'react';
+import React,{useEffect} from 'react';
 import {Col,Row,} from 'react-bootstrap'
 //import products from '../products'
 import Product from '../components/Products'
@@ -22,7 +22,7 @@ function HomeScreen() {
        
  
 
-    },[])
+    },[dispatch])
   
 
 

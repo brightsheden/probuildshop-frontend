@@ -1,13 +1,40 @@
 import {createStore,combineReducers,applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from "redux-devtools-extension"; 
-import { productListReducer ,productDetailsReducer} from "./reducers/ProductReducers";
+import { productListReducer ,
+    productDetailsReducer,
+    productCreateReducer,
+        productDeleteReducer,
+        productUpdateReducer} from "./reducers/ProductReducers";
 import { cartReducers } from './reducers/cartReducers';
-import { orderReducer,orderDetailsReducer, orderPayReducer,orderListMyReducer } from './reducers/orderReducers';
-import { userLoginReducer, userRegisterReducer ,userDetailsReducer,userUpdateProfileReducer, userListReducer, userDeleteReducer} from './reducers/userReducers';
+import { orderReducer,
+    orderDetailsReducer, 
+    orderPayReducer,
+    orderListMyReducer,
+     } from './reducers/orderReducers';
+import { userLoginReducer,
+     userRegisterReducer
+    ,userDetailsReducer,
+     userUpdateProfileReducer,
+    userListReducer,
+    userDeleteReducer,
+    userUpdateReducer,
+    } from './reducers/userReducers';
+
 const reducer = combineReducers({
     productList: productListReducer,
-    productDetails : productDetailsReducer,
+    productDetails: productDetailsReducer,
+    productDelete: productDeleteReducer,
+    productCreate: productCreateReducer,
+    productUpdate: productUpdateReducer,
+    
+    //productList: productListReducer,
+    //productDetails : productDetailsReducer,
+    //productDelete: productDeleteReducer,
+    //productCreate: productCreateReducer,
+    //productUpdate: productUpdateReducer,
+
+
     cart : cartReducers,
     userLogin : userLoginReducer,
     userRegister: userRegisterReducer,
@@ -15,6 +42,8 @@ const reducer = combineReducers({
     userUpdateProfile: userUpdateProfileReducer,
     usersList: userListReducer,
     userDelete: userDeleteReducer,
+    userUpdate: userUpdateReducer,
+
     orderCreate: orderReducer,
     orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,

@@ -5,10 +5,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
-import { getUserDetails } from '../actions/userAction'
+import { getUserDetails, updateUsers   } from '../actions/userAction'
 //import { getUserDetails, updateUser } from '../actions/userActions'
-import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
-//import { USER_UPDATE_RESET } from '../../../proshop_django-master/frontend/src/constants/userConstants'
+import { USER_UPDATE_RESET } from '../constants/userConstants'
 
 
 function UserEditScreen({ match, history }) {
@@ -24,15 +23,15 @@ function UserEditScreen({ match, history }) {
     const userDetails = useSelector(state => state.userDetails)
     const { error, loading, user } = userDetails
 
-    //const userUpdate = useSelector(state => state.userUpdate)
-    //const { error: errorUpdate, loading: loadingUpdate, success: successUpdate } = userUpdate
+    const userUpdate = useSelector(state => state.userUpdate)
+    const { error: errorUpdate, loading: loadingUpdate, success: successUpdate } = userUpdate
 
     useEffect(() => {
 
-        
-            
-        
-
+        if(successUpdate){
+            dispatch({type: USER_UPDATE_RESET})
+            history.push('/admin/userlist')
+        }else{
             if (!user.name || user._id !== Number(userId)) {
                 dispatch(getUserDetails(userId))
             } else {
@@ -41,12 +40,17 @@ function UserEditScreen({ match, history }) {
                 setIsAdmin(user.isAdmin)
         
         }
+        }
+            
+        
 
-    }, [user, userId,])
+           
+
+    }, [user, userId,successUpdate,errorUpdate,history])
 
     const submitHandler = (e) => {
         e.preventDefault()
-       // dispatch(updateUser({ _id: user._id, name, email, isAdmin }))
+       dispatch(updateUsers ({ _id: user._id, name, email, isAdmin }))
     }
 
     return (
@@ -58,11 +62,13 @@ function UserEditScreen({ match, history }) {
             <FormContainer>
                 <h1>Edit User</h1>
                 
-        
+                        {loadingUpdate && <Loader/>}
+                        {errorUpdate && <Message variant="danger">{error}</Message>}
 
-        
-                    
-                        <Form onSubmit={submitHandler}>
+                        {loading? (<Loader/>): error? (<Message variant="danger">{error}</Message>)
+                            :
+                            (
+                                <Form onSubmit={submitHandler}>
 
                             <Form.Group controlId='name'>
                                 <Form.Label>Name</Form.Label>
@@ -103,6 +109,9 @@ function UserEditScreen({ match, history }) {
 
                         </Form>
                     
+                            )}        
+                    
+                        
 
             </FormContainer >
         </div>
