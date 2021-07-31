@@ -6,15 +6,15 @@ import {useDispatch,useSelector} from 'react-redux'
 import { Navbar,Nav,Container,NavDropdown} from "react-bootstrap";
 import {LinkContainer,} from 'react-router-bootstrap'
 import { logout } from '../actions/userAction';
+import SearchBox from './SearchBox';
 
-
-function Headers({history}) {
+function Headers() {
     const userLogin = useSelector(state=> state.userLogin)
     const {userInfo} = userLogin
     const dispatch = useDispatch()
     const logoutHandler= ()=> {
         dispatch(logout())
-        history.push('/login')  
+        window.location.href="/login"  
     }
 
     return (
@@ -27,6 +27,7 @@ function Headers({history}) {
                    
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
+                        <SearchBox/>
                         <Nav className="mr-auto">
                             <LinkContainer to='/cart'>
                                 <Nav.Link><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>

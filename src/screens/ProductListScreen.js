@@ -11,6 +11,7 @@ import Message from '../components/Message'
 //import Paginate from '../components/Paginate'
 import { listProducts, deleteProduct, createProduct } from '../actions/productActions'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
+import Parginate from '../components/Parginate'
 
 function ProductListScreen({ history, match }) {
 
@@ -40,7 +41,7 @@ function ProductListScreen({ history, match }) {
         if (successCreate) {
             history.push(`/admin/product/${createdProduct._id}/edit`)
         } else {
-            dispatch(listProducts())
+            dispatch(listProducts(keyword))
         }
 
     }, [dispatch, history, userInfo, successDelete, successCreate, createdProduct, keyword])
@@ -120,6 +121,7 @@ function ProductListScreen({ history, match }) {
                                     ))}
                                 </tbody>
                             </Table>
+                            <Parginate page={page} pages={pages} isAdmin={true} keyword={keyword}/>
                 
                         </div>
                     )}

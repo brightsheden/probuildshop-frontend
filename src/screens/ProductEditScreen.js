@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import axios from "axios"
 import { Link } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -22,6 +23,7 @@ function ProductEditScreen({ match, history }) {
     const [category, setCategory] = useState('')
     const [countInstock, setCountInstock] = useState('')
     const [description, setDescription] = useState('')
+    const [uploading, setUploading] = useState(false)
 
 
 
@@ -76,6 +78,28 @@ function ProductEditScreen({ match, history }) {
         console.log("updated")
         history.push('/admin/productlist')
        //dispatch(updateUsers ({ _id: user._id, name, email, isAdmin }))
+    }
+
+    const uploadFileHandler = async  (e)=>{
+        const file = e.target.files[0]
+        const formData = new FormData()
+        formData.append('image',file)
+        formData.append('product_id', productId)
+        console.log("file is uploading")
+        setUploading(true)
+
+        try {
+            const config = {
+                "content-type" : "multipart/form/data"
+            }
+            const {data} =await axios.post("/api/products/upload/", formData,config)
+            setUploading(false)
+            setImage(data)
+        } catch (error) {
+            setUploading(false)
+            
+        }
+
     }
 
     return (
@@ -140,8 +164,15 @@ function ProductEditScreen({ match, history }) {
                                     placeholder='Enter image'
                                     value={image}
                                     onChange={(e) => setImage(e.target.value)}
-                                >
+                                >   
                                 </Form.Control>
+                                <Form.File
+                                 id="image-file"
+                                 label="choose file"
+                                 custom
+                                 onChange={uploadFileHandler}
+                                 ></Form.File>
+                                 {uploading && <Loader/> }
                             </Form.Group>
 
                             <Form.Group controlId='category'>
